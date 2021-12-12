@@ -1,0 +1,51 @@
+'Check if outlook running in VBA
+Sub TESTING()
+
+    Dim olApp As Object
+        On Error Resume Next
+    Set olApp = GetObject(, "Outlook.Application")
+     
+    On Error GoTo 0
+    If Not olApp Is Nothing Then
+      Worksheets("Sheet1").Range("A1") = "Outlook is open!"
+    Else
+      Worksheets("Sheet1").Range("A1") = "Outlook not open"
+    End If
+
+End Sub
+
+'===========================================================================================
+
+
+Sub Mail_small_Text_Outlook()
+'For Tips see: http://www.rondebruin.nl/win/winmail/Outlook/tips.htm
+'Working in Office 2000-2016
+    Dim OutApp As Object
+    Dim OutMail As Object
+    Dim strbody As String
+
+    Set OutApp = CreateObject("Outlook.Application")
+    Set OutMail = OutApp.CreateItem(0)
+
+    strbody = "Hi there" & vbNewLine & vbNewLine & _
+              "This is line 1" & vbNewLine & _
+              "This is line 2" & vbNewLine & _
+              "This is line 3" & vbNewLine & _
+              "This is line 4"
+
+    On Error Resume Next
+    With OutMail
+        .To = "agr921@gmail.com; chillinrose77@hotmail.com"
+        .CC = ""
+        .BCC = ""
+        .Subject = "auto email vba test 9/19/18"
+        .Body = strbody
+        'You can add a file like this
+        '.Attachments.Add ("C:\test.txt")
+        .Send   'or use .Display
+    End With
+    On Error GoTo 0
+
+    Set OutMail = Nothing
+    Set OutApp = Nothing
+End Sub
